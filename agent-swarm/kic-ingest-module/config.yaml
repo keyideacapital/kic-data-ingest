@@ -1,0 +1,38 @@
+# kic-ingest-module config
+# All values here can be overridden by environment variables with the same
+# name uppercased (e.g. AIRTABLE_API_KEY, WATCH_DIR, WRITER_MODE).
+
+# Directory the swarm watches for new CSV/XLSX files.
+watch_dir: /var/lib/kic-swarm/ingest-inbox
+
+# Where processed files move to after a successful run.
+processed_archive_dir: /var/lib/kic-swarm/ingest-archive
+
+# Working directory for engine JSONL output. Retained across runs so reruns can
+# reuse the files-seen ledger.
+output_dir: /var/lib/kic-swarm/ingest-out
+
+# Path to the installed kic-data-ingest skill bundle.
+skill_dir: /opt/agent-swarm/skills/kic-data-ingest
+
+# dry-run | plan | apply
+# Cron runs should use 'apply'. Manual inspection runs use 'plan'.
+writer_mode: apply
+
+# Extensions to pick up. Lowercase, dot-prefixed.
+file_types: .csv,.xlsx,.xlsm
+
+# Max files to process per cron tick — a runaway batch won't block other swarm
+# modules waiting for the runtime.
+max_files_per_run: 10
+
+# Skip files modified less than this many seconds ago (avoid processing
+# partial uploads).
+require_stable_seconds: 30
+
+# Slack-compatible webhook for run summaries. Leave blank for stdout-only.
+notify_webhook:
+
+# Airtable credentials. Set via env in production — do not commit secrets here.
+# airtable_api_key: (set via AIRTABLE_API_KEY)
+# airtable_base_id: (set via AIRTABLE_BASE_ID)

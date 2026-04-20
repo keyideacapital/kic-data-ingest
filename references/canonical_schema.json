@@ -1,0 +1,93 @@
+{
+  "_meta": {
+    "schema_version": "1.0.0",
+    "description": "Canonical schema for KIC CRM ingestion. Mirrors the Airtable tables: Organisations, Contacts, Interactions, Documents. Fields marked required=true are the minimum for a record to be created; records lacking them stay in the source-row buffer until supplemented. Fields marked is_match_key=true are used for record-level fuzzy matching against existing CRM records."
+  },
+  "Organisations": {
+    "_primary": "org_name",
+    "_match_keys": ["org_name", "website_domain", "linkedin_company_url"],
+    "fields": {
+      "org_name":            {"type": "string",  "required": true,  "description": "Legal or trading name of the organisation"},
+      "org_name_normalised": {"type": "string",  "required": false, "description": "Lowercase, diacritic-stripped, suffix-trimmed form used for matching"},
+      "org_type":            {"type": "string",  "required": false, "description": "VC / PE / Bank / Family Office / Corporate / Advisor / Fund / etc."},
+      "website":             {"type": "url",     "required": false},
+      "website_domain":      {"type": "string",  "required": false, "description": "Lowercase eTLD+1 derived from website or email"},
+      "linkedin_company_url":{"type": "url",     "required": false},
+      "hq_city":             {"type": "string",  "required": false},
+      "hq_country":          {"type": "string",  "required": false},
+      "offices":             {"type": "string",  "required": false, "description": "Free-text list of office locations"},
+      "phone":               {"type": "phone",   "required": false},
+      "general_email":       {"type": "email",   "required": false, "description": "info@/contact@ inbox address"},
+      "address":             {"type": "string",  "required": false, "description": "Full postal address string"},
+      "sector":              {"type": "string",  "required": false, "description": "Industry / sector focus"},
+      "stage_focus":         {"type": "string",  "required": false, "description": "Seed / Series A / Growth / etc."},
+      "aum":                 {"type": "string",  "required": false, "description": "Assets under management, as-stated"},
+      "licence_type":        {"type": "string",  "required": false, "description": "Regulatory licence classification (MAS / HKMA / ASIC / etc.)"},
+      "activity_type":       {"type": "string",  "required": false, "description": "Regulated activity / business type"},
+      "notes":               {"type": "text",    "required": false},
+      "source_ref":          {"type": "string",  "required": true,  "description": "filename#sheet!row for full provenance"},
+      "source_region":       {"type": "string",  "required": false, "description": "Detected region name within source (e.g. 'tabular_region_1')"},
+      "ingestion_confidence":{"type": "float",   "required": true,  "description": "0.0-1.0 confidence that this is a coherent, resolvable record"},
+      "ingestion_tier":      {"type": "string",  "required": true,  "description": "high | medium | low"}
+    }
+  },
+  "Contacts": {
+    "_primary": "email",
+    "_match_keys": ["email", "linkedin_profile_url", "full_name+org_name"],
+    "fields": {
+      "first_name":           {"type": "string", "required": false},
+      "last_name":            {"type": "string", "required": false},
+      "full_name":            {"type": "string", "required": true,  "description": "Composite of first+middle+last, or stated full name"},
+      "full_name_normalised": {"type": "string", "required": false, "description": "Lowercase, diacritic-stripped form used for matching"},
+      "title":                {"type": "string", "required": false, "description": "Honorific (Mr/Ms/Dr) — NOT job title"},
+      "job_title":            {"type": "string", "required": false},
+      "org_name":             {"type": "string", "required": false, "description": "Employer — becomes FK to Organisations on resolution"},
+      "org_id":               {"type": "string", "required": false, "description": "Resolved FK (populated downstream)"},
+      "email":                {"type": "email",  "required": false},
+      "email_alt":            {"type": "email",  "required": false},
+      "phone_business":       {"type": "phone",  "required": false},
+      "phone_mobile":         {"type": "phone",  "required": false},
+      "phone_other":          {"type": "phone",  "required": false},
+      "linkedin_profile_url": {"type": "url",    "required": false},
+      "address":              {"type": "string", "required": false},
+      "city":                 {"type": "string", "required": false},
+      "country":              {"type": "string", "required": false},
+      "notes":                {"type": "text",   "required": false},
+      "source_ref":           {"type": "string", "required": true},
+      "source_region":        {"type": "string", "required": false},
+      "ingestion_confidence": {"type": "float",  "required": true},
+      "ingestion_tier":       {"type": "string", "required": true}
+    }
+  },
+  "Interactions": {
+    "_primary": "interaction_id",
+    "_match_keys": ["interaction_id"],
+    "fields": {
+      "interaction_id":     {"type": "string", "required": true,  "description": "Deterministic hash of source_ref + date + subject"},
+      "contact_id":         {"type": "string", "required": false},
+      "org_id":             {"type": "string", "required": false},
+      "interaction_type":   {"type": "string", "required": false, "description": "Email / Call / Meeting / Note / Import"},
+      "interaction_date":   {"type": "date",   "required": false},
+      "subject":            {"type": "string", "required": false},
+      "body":               {"type": "text",   "required": false},
+      "source_ref":         {"type": "string", "required": true},
+      "ingestion_confidence":{"type": "float", "required": true},
+      "ingestion_tier":     {"type": "string", "required": true}
+    }
+  },
+  "Documents": {
+    "_primary": "document_id",
+    "_match_keys": ["document_id", "source_ref"],
+    "fields": {
+      "document_id":    {"type": "string", "required": true,  "description": "Hash of source file path + sheet/region"},
+      "filename":       {"type": "string", "required": true},
+      "file_type":      {"type": "string", "required": false, "description": "csv | xlsx | pdf | docx | other"},
+      "source_path":    {"type": "string", "required": true},
+      "region_count":   {"type": "int",    "required": false, "description": "Number of distinct tabular regions detected"},
+      "row_count":      {"type": "int",    "required": false},
+      "encoding":       {"type": "string", "required": false},
+      "ingested_at":    {"type": "datetime", "required": true},
+      "source_ref":     {"type": "string", "required": true}
+    }
+  }
+}

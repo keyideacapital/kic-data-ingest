@@ -1,0 +1,159 @@
+{
+  "_meta": {
+    "description": "Column-header synonyms for fuzzy column->canonical mapping. Keys are canonical field names from canonical_schema.json. Values are arrays of observed / plausible column headers, lowercased and stripped of punctuation at match time.",
+    "match_strategy": "Two-pass: (1) exact match on the normalised synonym list, (2) rapidfuzz token_sort_ratio against each synonym, take best >= threshold. Normalisation strips punctuation, collapses whitespace, lowercases.",
+    "min_score_threshold": 82
+  },
+
+  "org_name": [
+    "organisation name", "organization name", "org name", "organisation", "organization",
+    "company", "company name", "firm name", "firm", "business name", "entity name",
+    "name", "employer", "accelerator / incubator", "accelerator", "incubator",
+    "fund name", "bank name", "investor name", "vc name", "vc firm", "vc",
+    "counterparty", "account name", "legal name"
+  ],
+
+  "org_type": [
+    "type", "org type", "organisation type", "organization type", "entity type",
+    "company type", "firm type", "category", "classification", "institution type",
+    "bank type", "trustee type"
+  ],
+
+  "website": [
+    "website", "web page", "web site", "url", "homepage", "home page",
+    "web address", "corporate website", "official website", "bank website",
+    "company website", "site"
+  ],
+
+  "linkedin_company_url": [
+    "linkedin url", "linkedin", "linkedin company", "linkedin company url",
+    "linkedin company page", "company linkedin"
+  ],
+
+  "hq_city": [
+    "hq city", "headquarters city", "head office city", "city", "business city",
+    "office city", "main city"
+  ],
+
+  "hq_country": [
+    "hq country", "headquarters country", "head office country", "country",
+    "business country", "office country", "nation", "region"
+  ],
+
+  "offices": [
+    "offices", "office locations", "australia offices", "singapore offices",
+    "regional offices", "branches", "locations", "principal place of business"
+  ],
+
+  "phone": [
+    "phone", "phone number", "telephone", "tel", "business phone", "main phone",
+    "company main phone", "office phone", "contact number", "phone 1"
+  ],
+
+  "general_email": [
+    "general email", "info email", "contact email", "main email", "company email",
+    "enquiries", "enquiries email", "primary email"
+  ],
+
+  "address": [
+    "address", "full address", "business street", "postal address", "office address",
+    "street address", "local address", "local address (hk)", "street",
+    "principal/head office address", "head office address"
+  ],
+
+  "sector": [
+    "sector", "industry", "industries", "industry focus", "sector focus",
+    "segment", "segment / type", "vertical", "sector / industry", "line of business"
+  ],
+
+  "stage_focus": [
+    "stage focus", "stage", "investment stage", "investment stages", "stages",
+    "funding stage", "deal stage", "focus stage"
+  ],
+
+  "aum": [
+    "aum", "assets under management", "fund size", "total aum",
+    "investment size", "assets"
+  ],
+
+  "licence_type": [
+    "licence type", "license type", "licence type/status", "license type/status",
+    "licence", "license", "licence status", "licence no", "licence number",
+    "licence no.", "mas licence", "regulatory status"
+  ],
+
+  "activity_type": [
+    "activity", "activity/business type", "business type", "regulated activity",
+    "activities", "business activity"
+  ],
+
+  "notes": [
+    "notes", "note", "comments", "remarks", "description", "observations",
+    "memo"
+  ],
+
+  "first_name": [
+    "first name", "given name", "firstname", "forename", "fname"
+  ],
+
+  "middle_name": [
+    "middle name", "middlename", "mname"
+  ],
+
+  "last_name": [
+    "last name", "surname", "family name", "lastname", "lname"
+  ],
+
+  "full_name": [
+    "full name", "name", "contact name", "contact person", "person",
+    "primary contact", "lead contact", "attendee"
+  ],
+
+  "title": [
+    "title", "salutation", "prefix", "honorific"
+  ],
+
+  "job_title": [
+    "job title", "position", "role", "designation", "title at company",
+    "contact title", "job role", "function", "job"
+  ],
+
+  "email": [
+    "email", "e-mail", "e-mail address", "email address", "email 1",
+    "primary email address", "work email", "business email",
+    "contact email", "person email", "personal work email"
+  ],
+
+  "email_alt": [
+    "e-mail 2 address", "e-mail 3 address", "email 2", "email 3",
+    "secondary email", "alternate email", "personal email"
+  ],
+
+  "phone_business": [
+    "business phone", "business phone 2", "work phone", "office phone",
+    "direct line", "direct dial"
+  ],
+
+  "phone_mobile": [
+    "mobile phone", "mobile", "cell phone", "cell", "cellphone",
+    "mobile number"
+  ],
+
+  "phone_other": [
+    "other phone", "home phone", "home phone 2", "other fax", "assistants phone",
+    "assistant's phone", "car phone", "radio phone"
+  ],
+
+  "linkedin_profile_url": [
+    "linkedin profile", "linkedin profile url", "personal linkedin",
+    "linkedin personal"
+  ],
+
+  "city": [
+    "city", "town", "locality", "home city", "business city"
+  ],
+
+  "country": [
+    "country", "nation", "home country", "business country"
+  ]
+}

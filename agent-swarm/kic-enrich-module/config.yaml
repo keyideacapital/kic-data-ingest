@@ -1,0 +1,20 @@
+# kic-enrich-module config
+# Runs AFTER kic-ingest-module has populated out_dir. Both modules should
+# point at the same out_dir.
+
+out_dir: /var/lib/kic-swarm/ingest-out
+skill_dir: /opt/agent-swarm/skills/kic-data-ingest
+
+# Max URL-only records to enrich per cron tick.
+# At ~$0.01 per record (Haiku 4.5), 50/run × 48 runs/day = 2,400/day = $24/day worst case.
+max_records_per_run: 50
+
+# Hard cost-cap stop per run. Leave blank for no cap (relies on max_records_per_run).
+# Useful belt-and-braces if you change models and costs shift.
+cost_cap_usd: 1.00
+
+# Anthropic credentials — set via env in production.
+# anthropic_api_key: (set via ANTHROPIC_API_KEY)
+
+# Slack-compatible webhook for run summaries.
+notify_webhook:

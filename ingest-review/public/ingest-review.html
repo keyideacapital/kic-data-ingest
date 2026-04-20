@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Ingest Review · KIC</title>
+  <link rel="stylesheet" href="/ingest-review/ingest-review.css" />
+  <!-- Relies on the existing KIC app shell for navigation + auth. Include after app.css. -->
+</head>
+<body>
+  <div id="ingest-app" class="ingest-shell">
+
+    <!-- Top bar -->
+    <header class="ingest-topbar">
+      <div class="ingest-topbar-left">
+        <h1 class="ingest-title">Ingest Review</h1>
+        <div class="ingest-stats" id="stats-summary">
+          <span class="stat-chip" data-kind="review">Review —</span>
+          <span class="stat-chip" data-kind="manual">Manual —</span>
+          <span class="stat-chip" data-kind="promoted">Promoted —</span>
+        </div>
+      </div>
+      <div class="ingest-topbar-right">
+        <input id="search" type="search" placeholder="Search source file, name, email..." />
+        <button id="refresh" class="btn-secondary" title="Refresh (R)">Refresh</button>
+      </div>
+    </header>
+
+    <!-- Main 3-column layout -->
+    <div class="ingest-main">
+
+      <!-- LEFT: filters -->
+      <aside class="ingest-filters" id="filters-pane">
+        <div class="filter-group">
+          <label class="filter-group-label">Queue</label>
+          <div class="segmented" data-filter="status">
+            <button class="seg active" data-value="pending_review">Pending</button>
+            <button class="seg" data-value="manual">Manual</button>
+            <button class="seg" data-value="promoted">Promoted</button>
+            <button class="seg" data-value="rejected">Rejected</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-group-label">Kind</label>
+          <div class="segmented" data-filter="kind">
+            <button class="seg active" data-value="all">All</button>
+            <button class="seg" data-value="Organisation">Orgs</button>
+            <button class="seg" data-value="Contact">Contacts</button>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-group-label">Flag</label>
+          <select id="filter-flag">
+            <option value="">Any</option>
+            <option value="unresolved_org">Unresolved org</option>
+          </select>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-group-label">Confidence</label>
+          <div class="conf-range">
+            <input type="range" id="conf-min" min="0" max="100" value="0" />
+            <span id="conf-min-val" class="conf-num">0.00</span>
+          </div>
+          <div class="conf-range">
+            <input type="range" id="conf-max" min="0" max="100" value="100" />
+            <span id="conf-max-val" class="conf-num">1.00</span>
+          </div>
+        </div>
+
+        <div class="filter-group">
+          <label class="filter-group-label">Source file</label>
+          <input id="filter-source" type="text" placeholder="filename fragment..." />
+        </div>
+
+        <button id="filter-apply" class="btn-primary">Apply filters</button>
+        <button id="filter-clear" class="btn-link">Clear all</button>
+      </aside>
+
+      <!-- MIDDLE: list -->
+      <section class="ingest-list" id="list-pane">
+        <div class="list-header">
+          <label class="bulk-all">
+            <input type="checkbox" id="bulk-select-all" />
+            <span id="selection-count">0 selected</span>
+          </label>
+          <div class="bulk-actions" id="bulk-actions" hidden>
+            <button id="bulk-promote" class="btn-primary">Promote selected</button>
+            <button id="bulk-reject" class="btn-danger">Reject selected</button>
+          </div>
+        </div>
+        <ul id="list" class="list-items" role="listbox" aria-label="Review queue"></ul>
+        <div class="list-footer" id="list-footer">
+          <button id="load-more" class="btn-link" hidden>Load more</button>
+          <span id="list-empty" hidden>No items match the current filters.</span>
+        </div>
+      </section>
+
+      <!-- RIGHT: detail pane -->
+      <section class="ingest-detail" id="detail-pane">
+        <div id="detail-empty" class="detail-empty">
+          <p>Select an item to review.</p>
+          <p class="muted">Keyboard: j/k — navigate · p — promote · r — reject · e — edit</p>
+        </div>
+
+        <article id="detail-card" hidden>
+          <header class="detail-header">
+            <div>
+              <span class="tier-pill" id="detail-tier"></span>
+              <span class="kind-pill" id="detail-kind"></span>
+              <span class="flag-pill" id="detail-flag" hidden></span>
+            </div>
+            <h2 id="detail-name"></h2>
+            <p class="detail-meta" id="detail-meta"></p>
+          </header>
+
+          <form id="detail-form" autocomplete="off">
+            <!-- Fields are rendered dynamically by ingest-review.js based on Kind. -->
+          </form>
+
+          <div class="detail-provenance">
+            <h3>Provenance</h3>
+            <pre id="detail-source-ref"></pre>
+          </div>
+
+          <div class="detail-actions">
+            <button id="action-promote" class="btn-primary">Promote</button>
+            <button id="action-save-edits" class="btn-secondary">Save edits</button>
+            <button id="action-reject" class="btn-danger">Reject</button>
+          </div>
+        </article>
+      </section>
+    </div>
+
+    <!-- Toast -->
+    <div id="toast" class="toast" hidden></div>
+  </div>
+
+  <script src="/ingest-review/ingest-review.js" defer></script>
+</body>
+</html>
